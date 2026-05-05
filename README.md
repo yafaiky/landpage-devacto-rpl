@@ -1,16 +1,44 @@
-# React + Vite
+# Landing Page DEVACTO RPL
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyek ini adalah landpage devacto rpl.
 
-Currently, two official plugins are available:
+-----
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
+## Teknologi yang Digunakan
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+  - [Vite](https://vitejs.dev/) — *Build tool* frontend yang sangat cepat.
+  - [React](https://react.dev/) — Library JavaScript untuk membangun antarmuka pengguna.
+  - [Tailwind CSS](https://tailwindcss.com/) — Framework CSS *utility-first* untuk desain cepat.
+  - [GSAP](https://gsap.com/) — Library animasi standar industri untuk interaksi tingkat lanjut.
 
-## Expanding the ESLint configuration
+-----
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Instalasi
+
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek di komputer lokal Anda:
+
+1.  **Clone repositori:**
+
+    ```bash
+    git clone https://github.com/yafaiky/landpage-devacto-rpl.git
+    cd landpage-devacto-rpl
+    ```
+
+2.  **Instal dependensi:**
+    Pastikan Anda sudah menginstal Node.js, lalu jalankan:
+
+    ```bash
+    npm install
+    ```
+
+3.  **Jalankan server pengembangan:**
+
+    ```bash
+    npm run dev
+    ```
+
+4.  **Buka di browser:**
+    Kunjungi [http://localhost:5173](https://www.google.com/search?q=http://localhost:5173) (atau port yang tertera di terminal Anda).
+
+-----
