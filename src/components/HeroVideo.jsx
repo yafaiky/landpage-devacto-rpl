@@ -158,11 +158,7 @@ const HeroVideo = () => {
   ));
 
   return (
-    <section
-      className="hero"
-      id="hero"
-      ref={container}
-    >
+    <section className="hero" id="hero" ref={container}>
       <div className="hero__scroll-wrapper">
         <div className="hero__grid">
           {verticalLines}
@@ -176,10 +172,7 @@ const HeroVideo = () => {
         </div>
 
         <div className="hero__bg-logo">
-          <img
-            src={logoImg}
-            alt="Devaccto Logo Background"
-          />
+          <img src={logoImg} alt="Devaccto Logo Background" />
         </div>
 
         <div className="hero__content">
@@ -190,10 +183,7 @@ const HeroVideo = () => {
             </span>
           </h1>
 
-          <p
-            ref={subtitleRef}
-            className="hero__subtitle"
-          />
+          <p ref={subtitleRef} className="hero__subtitle" />
 
           <div className="hero__actions">
             <button className="hero__btn-primary">Start Consultation</button>
