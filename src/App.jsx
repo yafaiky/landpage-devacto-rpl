@@ -1,12 +1,13 @@
-import GSAP from './components/gsap';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
 import './App.css'
 
 function App() {
   return (
-  <>
-    <h1 className="text-3xl font-bold underline">ini adalah test gsap!</h1>
-      <GSAP />
-    </>
+    <div>
+      <Navbar />
+      <Home />
+    </div>
   )
 }
 
