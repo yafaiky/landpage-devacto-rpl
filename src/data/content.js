@@ -1,0 +1,200 @@
+// ============================================================
+// src/data/content.js
+// Devacctto RPL — All website content in one place.
+// Never hardcode text in JSX. Edit here to update content.
+// ============================================================
+
+// ── ABOUT ────────────────────────────────────────────────────
+export const aboutData = {
+  badge: "Tentang Kami",
+  headline:
+    "Kami percaya siswa RPL terbaik belajar dari deadline, bug produksi, dan pull request yang ditolak reviewer.",
+  body: "Devacctto — singkatan dari Development Acceleration Troops — adalah ekstrakurikuler Rekayasa Perangkat Lunak yang berfokus pada pembangunan produk nyata, bukan sekadar latihan soal.",
+  stats: [
+    { value: "42+", label: "Proyek Open-Source" },
+    { value: "6×",  label: "Juara LKS Provinsi" },
+    { value: "89",  label: "Alumni ke Industri" },
+    { value: "2018",label: "Berdiri Sejak" },
+  ],
+  // Keywords with hover images (relative path from /public)
+  keywords: [
+    { word: "Devacctto",  image: "/devacto.png",   alt: "Logo Devacctto" },
+    { word: "deadline",   image: "/deadline.jpg",   alt: "Suasana deadline" },
+    { word: "produksi",   image: "/produksi.jpg",   alt: "Bug produksi" },
+    { word: "Community",  image: "/comunity.jpg",   alt: "Komunitas Devacctto" },
+  ],
+};
+
+// ── BERITA ───────────────────────────────────────────────────
+export const newsData = [
+  {
+    id: 1,
+    category: "Workshop",
+    date: "Sabtu, 19 Oktober 2024",
+    title: "Workshop Laravel 11: Membangun Sistem Inventaris Sekolah",
+    excerpt:
+      "09.00–15.00 WIB di Lab RPL-2. Peserta wajib bawa laptop dengan PHP 8.2+, Composer, dan MySQL 8. Pendaftaran via forum, kuota 30 orang.",
+    image: "/banner.png",
+  },
+  {
+    id: 2,
+    category: "Prestasi",
+    date: "08 Oktober 2024",
+    title: "Tim Devacctto Juara 2 LKS Provinsi — kategori Web Technologies",
+    excerpt:
+      "Selamat untuk Bagas Wirawan, Putri Anjani, dan Aldi Pratama yang membawa pulang medali perak. Lanjut ke tingkat nasional di Bandung, November 2024.",
+    image: "/banner.png",
+  },
+  {
+    id: 3,
+    category: "Rekrutmen",
+    date: "25 Oktober 2024",
+    title: "Rekrutmen Anggota Baru Batch 2024/2025 Dibuka",
+    excerpt:
+      "Kuota 30 siswa kelas X & XI. Syarat: minat besar di pemrograman, sanggup commit minimal 8 jam/minggu, dan ikut seleksi coding 90 menit. Form ditutup 25 Oktober 2024.",
+    image: "/banner.png",
+  },
+];
+
+// ── JADWAL ───────────────────────────────────────────────────
+export const scheduleData = [
+  {
+    id: 1,
+    date: "19 Okt",
+    year: "2024",
+    day: "Sabtu",
+    title: "Workshop Laravel",
+    description: "Membangun Sistem Inventaris Sekolah bersama mentor industri.",
+    location: "Lab RPL-2",
+    time: "09.00 – 15.00 WIB",
+    status: "upcoming",
+  },
+  {
+    id: 2,
+    date: "08 Okt",
+    year: "2024",
+    day: "Selasa",
+    title: "LKS Provinsi",
+    description: "Kompetisi Lomba Kompetensi Siswa tingkat provinsi — Web Technologies.",
+    location: "Gedung Serbaguna",
+    time: "07.00 – 17.00 WIB",
+    status: "done",
+  },
+  {
+    id: 3,
+    date: "28 Sep",
+    year: "2024",
+    day: "Sabtu",
+    title: "Codelab Sabtu",
+    description: "Sesi coding intensif bersama seluruh anggota aktif Devacctto.",
+    location: "Lab RPL-1",
+    time: "08.00 – 13.00 WIB",
+    status: "done",
+  },
+  {
+    id: 4,
+    date: "14 Sep",
+    year: "2024",
+    day: "Sabtu",
+    title: "Hackathon",
+    description: "Membangun prototipe aplikasi dalam 24 jam bersama tim.",
+    location: "Aula SMK",
+    time: "08.00 – 08.00 WIB +1",
+    status: "done",
+  },
+  {
+    id: 5,
+    date: "31 Agu",
+    year: "2024",
+    day: "Sabtu",
+    title: "Bakti Sosial",
+    description: "Kegiatan sosial memberdayakan komunitas sekitar dengan teknologi.",
+    location: "Desa Binaan",
+    time: "07.00 – 14.00 WIB",
+    status: "done",
+  },
+  {
+    id: 6,
+    date: "17 Agu",
+    year: "2024",
+    day: "Sabtu",
+    title: "Studi Tour",
+    description: "Kunjungan industri ke perusahaan teknologi di kota.",
+    location: "Kantor Tech Hub",
+    time: "08.00 – 16.00 WIB",
+    status: "done",
+  },
+];
+
+// ── POLLING ──────────────────────────────────────────────────
+export const pollingData = {
+  question: "Teknologi apa yang ingin kamu pelajari di Devacctto semester ini?",
+  options: [
+    { id: "a", label: "Laravel & PHP Modern", votes: 48 },
+    { id: "b", label: "React / Vue Frontend", votes: 35 },
+    { id: "c", label: "Mobile (Kotlin / Flutter)", votes: 27 },
+    { id: "d", label: "DevOps & Cloud", votes: 19 },
+    { id: "e", label: "UI/UX & Figma", votes: 14 },
+  ],
+  totalVotes: 143,
+};
+
+// ── TAG ──────────────────────────────────────────────────────
+export const tagData = [
+  "PHP", "MySQL", "Laravel", "Java", "Python",
+  "C++", "Vue", "Git", "Linux", "Docker",
+  "UI/UX", "Figma", "Kotlin", "Firebase",
+  "REST API", "Bootstrap", "Tailwind", "Node.js",
+];
+
+// ── TAUTAN ───────────────────────────────────────────────────
+export const linksData = [
+  {
+    id: 1,
+    category: "Dokumentasi",
+    title: "php.net Manual",
+    description: "Dokumentasi resmi PHP — referensi fungsi, OOP, dan best practice.",
+    url: "https://www.php.net/manual/en/",
+    external: true,
+  },
+  {
+    id: 2,
+    category: "Dokumentasi",
+    title: "MySQL Documentation",
+    description: "Panduan lengkap MySQL dari Oracle untuk semua versi.",
+    url: "https://dev.mysql.com/doc/",
+    external: true,
+  },
+  {
+    id: 3,
+    category: "Komunitas",
+    title: "Stack Overflow",
+    description: "Platform tanya jawab terbesar untuk developer seluruh dunia.",
+    url: "https://stackoverflow.com/",
+    external: true,
+  },
+  {
+    id: 4,
+    category: "Open Source",
+    title: "GitHub Devacctto",
+    description: "Seluruh repo open-source Devacctto tersedia di sini.",
+    url: "https://github.com/",
+    external: true,
+  },
+  {
+    id: 5,
+    category: "Belajar",
+    title: "Laracasts",
+    description: "Kursus video premium untuk Laravel & ekosistem PHP modern.",
+    url: "https://laracasts.com/",
+    external: true,
+  },
+  {
+    id: 6,
+    category: "Belajar",
+    title: "W3Schools",
+    description: "Tutorial web development dari HTML hingga backend untuk pemula.",
+    url: "https://www.w3schools.com/",
+    external: true,
+  },
+];
