@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,11 +62,15 @@ const Navbar = () => {
           <a href="#" className={`navbar__logo ${isOpen ? "open" : ""}`}>
             Devaccto
           </a>
+          
         </div>
 
-        <button className={`navbar__cta-custom ${isOpen ? "open" : ""}`}>
-          Work with us
-        </button>
+        <div className="navbar__right">
+          <ThemeToggle />
+          <button className={`navbar__cta-custom ${isOpen ? "open" : ""}`}>
+            Work with us
+          </button>
+        </div>
       </div>
 
       <div

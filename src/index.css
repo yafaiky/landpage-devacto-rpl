@@ -19,6 +19,7 @@
   --color-text-muted: #8D99AE;
   --color-border: #EDF2F7;
   --color-border-light: rgba(0, 0, 0, 0.05);
+  --color-border-hard: #2B2D42;
 
   /* Typography */
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -28,11 +29,29 @@
   --container-max: 1200px;
 }
 
+.dark {
+  --color-bg-primary: #0F172A;
+  --color-bg-secondary: #1E293B;
+  --color-bg-card: #1E293B;
+  --color-bg-card-hover: #334155;
+  
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #94A3B8;
+  
+  --color-border: #334155;
+  --color-border-light: rgba(255, 255, 255, 0.05);
+  
+  /* Buttons etc need dark borders in dark mode, so invert this */
+  --color-border-hard: #F8FAFC; 
+}
+
 /* ===== RESET & BASE ===== */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 html {
@@ -50,6 +69,7 @@ body {
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -74,7 +94,7 @@ button {
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 10px
 }
 ::-webkit-scrollbar-track {
   background: var(--color-bg-secondary);
