@@ -71,7 +71,6 @@ export default function Tautan() {
       <div className="tautan__container section__container">
         <div className="section__header">
           <div className="section__badge">
-            <span className="section__badge-dot" />
             Resources
           </div>
           <h2 className="section__title tautan__title" ref={titleRef}>&nbsp;</h2>

@@ -60,7 +60,6 @@ export default function Tag() {
       <div className="tag__container">
         <div className="section__header">
           <div className="section__badge">
-            <span className="section__badge-dot" />
             Teknologi
           </div>
           <h2 className="tag__title section__title">Stack &amp; Tools</h2>

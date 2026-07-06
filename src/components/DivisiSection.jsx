@@ -1,13 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import {
-  FaGlobe, FaServer, FaPaintBrush, // Web
-  FaShieldAlt, FaLock, FaUserSecret, // Cyber
-  FaGamepad, FaUnity, FaVrCardboard, // Game
-  FaBrain, FaDatabase, FaRobot, // ML
-  FaMobileAlt, FaApple, FaAndroid, // Mobile
+  FaGlobe, FaServer, FaPaintBrush,
+  FaShieldAlt, FaLock, FaUserSecret,
+  FaGamepad, FaUnity, FaVrCardboard,
+  FaBrain, FaDatabase, FaRobot,
+  FaMobileAlt, FaApple, FaAndroid,
   FaArrowRight,
 } from "react-icons/fa";
 
@@ -18,7 +18,7 @@ const divisions = [
     id: "web",
     badge: "WEB & CLOUD",
     title: "Web Development",
-    desc: "At Devaccto, Web Development is the foundation of our digital solutions. We build scalable, high-performance web applications tailored to solve complex business challenges, focusing on modern architectures, responsive design, and robust backend systems.",
+    desc: "At Devaccto, Web Development is the foundation of our digital solutions. We build scalable, high-performance web applications tailored to solve complex business challenges.",
     themeColor: "#3B82F6",
     Image: "/imageDivisi/web.jpg",
     departments: [
@@ -31,7 +31,7 @@ const divisions = [
     id: "cycec",
     badge: "SECURITY",
     title: "Cyber Security",
-    desc: "Protecting digital assets is our top priority. The Cyber Security division focuses on identifying vulnerabilities, implementing robust defense mechanisms, and ensuring compliance with the highest data protection standards.",
+    desc: "Protecting digital assets is our top priority. The Cyber Security division focuses on identifying vulnerabilities and implementing robust defense mechanisms.",
     themeColor: "#EF4444",
     Image: "/imageDivisi/cycec.jpg",
     departments: [
@@ -44,7 +44,7 @@ const divisions = [
     id: "game",
     badge: "INTERACTIVE",
     title: "Game Development",
-    desc: "We bring imagination to life through interactive experiences. Our Game Development team combines technical expertise with creative storytelling to build engaging 2D and 3D games across multiple platforms.",
+    desc: "We bring imagination to life through interactive experiences. Our Game Development team combines technical expertise with creative storytelling.",
     themeColor: "#8B5CF6",
     Image: "/imageDivisi/game.jpg",
     departments: [
@@ -57,20 +57,20 @@ const divisions = [
     id: "ml",
     badge: "ARTIFICIAL INTELLIGENCE",
     title: "Machine Learning",
-    desc: "Machine Learning is at the heart of our innovation. Our division is built to design, train, and deploy intelligent models that solve real-world challenges. From cutting-edge research to scalable MLOps, we turn data into impact.",
+    desc: "Machine Learning is at the heart of our innovation. We design, train, and deploy intelligent models that solve real-world challenges at scale.",
     themeColor: "#6366F1",
     Image: "/imageDivisi/machine.jpg",
     departments: [
-      { icon: FaBrain, title: "Machine Learning Research", desc: "Exploring advanced algorithms and deep learning techniques to build intelligent solutions." },
+      { icon: FaBrain, title: "ML Research", desc: "Exploring advanced algorithms and deep learning techniques to build intelligent solutions." },
       { icon: FaDatabase, title: "MLOps & Engineering", desc: "Building and scaling reliable pipelines, model deployment, and performance monitoring." },
-      { icon: FaRobot, title: "AI Governance & Ethics", desc: "Ensuring model transparency, fairness, privacy, and regulatory compliance across initiatives." }
+      { icon: FaRobot, title: "AI Governance", desc: "Ensuring model transparency, fairness, privacy, and regulatory compliance across initiatives." }
     ]
   },
   {
     id: "mobile",
     badge: "APPS",
     title: "Mobile Development",
-    desc: "Connecting users on the go. The Mobile division specializes in crafting high-quality, native and cross-platform applications that deliver exceptional performance and native-like experiences on all devices.",
+    desc: "Connecting users on the go. The Mobile division specializes in crafting high-quality, native and cross-platform apps that deliver exceptional performance.",
     themeColor: "#10B981",
     Image: "/imageDivisi/mobile.jpg",
     departments: [
@@ -82,134 +82,168 @@ const divisions = [
 ];
 
 const DivisiSection = () => {
-  const container = useRef();
-  const hoverImageRef = useRef(null);
-  const hoverImageSrcRef = useRef(null);
+  const container = useRef(null);
+  const cardRefs = useRef([]);
 
-  // Initialize hover image centering
+  // ── Hover Image (cursor-follow) refs ──────────────────────
+  const hoverImgWrap = useRef(null);
+  const hoverImgEl = useRef(null);
+  const isHovered = useRef(false);
+
+  // Set initial transform once
   useGSAP(() => {
-    if (hoverImageRef.current) {
-      gsap.set(hoverImageRef.current, { xPercent: -50, yPercent: -50 });
+    if (hoverImgWrap.current) {
+      gsap.set(hoverImgWrap.current, { xPercent: -50, yPercent: -50, scale: 0, opacity: 0 });
     }
   });
 
-  const handleMouseMove = (e) => {
-    gsap.to(hoverImageRef.current, {
+  const handleTitleMouseMove = useCallback((e) => {
+    if (!hoverImgWrap.current) return;
+    gsap.to(hoverImgWrap.current, {
       x: e.clientX,
       y: e.clientY,
-      duration: 0.4,
-      ease: "power3.out"
+      duration: 0.45,
+      ease: "power3.out",
     });
-  };
+  }, []);
 
-  const handleMouseEnter = (imgUrl) => {
-    if (hoverImageSrcRef.current) {
-      hoverImageSrcRef.current.src = imgUrl;
-    }
-    gsap.to(hoverImageRef.current, {
-      opacity: 1,
+  const handleTitleMouseEnter = useCallback((imgSrc) => {
+    if (!hoverImgWrap.current || !hoverImgEl.current) return;
+    isHovered.current = true;
+    hoverImgEl.current.src = imgSrc;
+    gsap.to(hoverImgWrap.current, {
       scale: 1,
-      duration: 0.3,
-      ease: "power2.out"
+      opacity: 1,
+      duration: 0.4,
+      ease: "back.out(1.4)",
     });
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
-    gsap.to(hoverImageRef.current, {
+  const handleTitleMouseLeave = useCallback(() => {
+    if (!hoverImgWrap.current) return;
+    isHovered.current = false;
+    gsap.to(hoverImgWrap.current, {
+      scale: 0,
       opacity: 0,
-      scale: 0.5,
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.in",
     });
-  };
+  }, []);
 
+  // ── Stacked Cards GSAP ────────────────────────────────────
   useGSAP(
     () => {
-      const cards = gsap.utils.toArray(".divisi__card");
-      const totalCards = cards.length;
+      const totalCards = divisions.length;
+      const cardElements = cardRefs.current.filter(Boolean);
+      if (!cardElements[0]) return;
 
-      cards.forEach((card, i) => {
-        // Stack offset — each card sits slightly higher than the previous
-        const stackTop = 80 + i * 20; // px from top of sticky container
-
+      cardElements.forEach((card, i) => {
+        if (!card) return;
         gsap.set(card, {
-          position: "sticky",
-          top: stackTop,
           zIndex: i + 1,
-          transformOrigin: "top center",
+          y: i === 0 ? "0%" : "150vh",
+          scale: 1,
+          rotation: 0,
+          transformOrigin: "center bottom",
         });
-
-        // All cards EXCEPT the last one shrink when the NEXT card scrolls over them
-        if (i < totalCards - 1) {
-          const scaleValue = 1 - (totalCards - i - 1) * 0.04;
-
-          ScrollTrigger.create({
-            trigger: cards[i + 1],       // triggered when the next card enters
-            start: "top bottom",
-            end: "top top",
-            scrub: true,
-            onUpdate: (self) => {
-              const progress = self.progress;
-              gsap.set(card, {
-                scale: 1 - progress * (1 - scaleValue),
-                filter: `brightness(${1 - progress * 0.15})`,
-              });
-            },
-          });
-        }
-
-        // Entrance animation for each card
-        gsap.fromTo(
-          card,
-          { y: 80, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 90%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
       });
+
+      const scrollTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".divisi__sticky-stage",
+          start: "top top",
+          end: `+=${window.innerHeight * (totalCards - 1)}`,
+          pin: true,
+          scrub: 0.5,
+          pinSpacing: true,
+        },
+      });
+
+      for (let i = 0; i < totalCards - 1; i++) {
+        const currentCard = cardElements[i];
+        const nextCard = cardElements[i + 1];
+        if (!currentCard || !nextCard) continue;
+
+        // Current card: scale down + slight rotation
+        scrollTimeline.to(
+          currentCard,
+          { scale: 0.9, rotation: -3, duration: 1, ease: "none" },
+          i
+        );
+
+        // Next card: slide up from below
+        scrollTimeline.to(
+          nextCard,
+          { y: "0%", duration: 1, ease: "none" },
+          i
+        );
+      }
+
+      const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
+      if (container.current) resizeObserver.observe(container.current);
+
+      return () => {
+        resizeObserver.disconnect();
+        scrollTimeline.kill();
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+      };
     },
     { scope: container }
   );
 
   return (
-    <section className="section divisi-section-new" id="divisions" ref={container}>
-      <div className="section__header divisi__header">
+    <section className="divisi-section-v2" id="divisions" ref={container}>
+
+      {/* ── Section Header ───────────────────────────────── */}
+      <div className="divisi__header-v2">
+        <div className="divisi__header-eyebrow">
+          <span>Divisi Kami</span>
+        </div>
         <h2 className="section__title project__title">Divisi Devacto IT</h2>
+        <p className="divisi__header-sub">Scroll untuk menjelajahi setiap divisi ↓</p>
       </div>
 
-      <div className="section__container">
-        <div className="divisi__list">
+      {/* ── Pinned sticky stage ──────────────────────────── */}
+      <div className="divisi__sticky-stage">
+        <div className="divisi__stack-container">
           {divisions.map((div, i) => (
             <div
-              className="divisi__card"
               key={div.id}
+              className="divisi__stack-card"
+              ref={(el) => { cardRefs.current[i] = el; }}
+              style={{ "--theme-color": div.themeColor }}
             >
-              {/* LEFT PANE - CONTENT */}
+              {/* Card counter */}
+              <div className="divisi__card-counter">
+                <span className="divisi__card-num">{String(i + 1).padStart(2, "0")}</span>
+                <span className="divisi__card-total">/ {String(divisions.length).padStart(2, "0")}</span>
+              </div>
+
+              {/* ── LEFT PANE ── */}
               <div className="divisi__pane-left">
+                {/* Badge */}
                 <div className="divisi__badge">
-                  <img src="/devacto.png" alt="Devaccto Icon" className="divisi__badge-img" />
+                  <img src="/devacto.png" alt="Devaccto" className="divisi__badge-img" />
                   <span className="divisi__badge-text">DIVISI DEVACTO IT</span>
                 </div>
 
+                {/* Accent bar */}
+                <div className="divisi__theme-accent" style={{ backgroundColor: div.themeColor }} />
+
+                {/* ★ Title with hover-image effect ★ */}
                 <h3
                   className="divisi__title"
-                  onMouseMove={handleMouseMove}
-                  onMouseEnter={() => handleMouseEnter(div.Image)}
-                  onMouseLeave={handleMouseLeave}
-                  style={{ '--underline-color': div.themeColor }}
+                  style={{ "--underline-color": div.themeColor }}
+                  onMouseMove={handleTitleMouseMove}
+                  onMouseEnter={() => handleTitleMouseEnter(div.Image)}
+                  onMouseLeave={handleTitleMouseLeave}
                 >
                   {div.title}
                 </h3>
+
                 <p className="divisi__desc">{div.desc}</p>
 
+                {/* Departments */}
                 <div className="divisi__departments">
                   {div.departments.map((dept, j) => (
                     <div className="divisi__dept-item" key={j}>
@@ -225,8 +259,14 @@ const DivisiSection = () => {
                 </div>
               </div>
 
-              {/* RIGHT PANE - VISUAL & ACTION */}
-              <div className="divisi__pane-right" style={{ backgroundColor: `${div.themeColor}10` }}>
+              {/* ── RIGHT PANE ── */}
+              <div className="divisi__pane-right" style={{ background: `${div.themeColor}12` }}>
+                {/* Mobile-only image strip */}
+                <div className="divisi__mobile-img-strip">
+                  <img src={div.Image} alt={div.title} className="divisi__mobile-strip-img" />
+                  <div className="divisi__mobile-strip-overlay" style={{ background: `linear-gradient(to right, ${div.themeColor}22, transparent)` }} />
+                </div>
+
                 <div className="divisi__illustration">
                   <img src={div.Image} alt={div.title} className="divisi__image" />
                 </div>
@@ -239,12 +279,21 @@ const DivisiSection = () => {
             </div>
           ))}
         </div>
+
+        {/* Scroll hint */}
+        <p className="divisi__scroll-hint">SCROLL TO EXPLORE ↓</p>
       </div>
 
-      {/* Floating Hover Image */}
-      <div className="divisi__hover-image-container" ref={hoverImageRef}>
-        <img ref={hoverImageSrcRef} alt="Hover Effect" className="divisi__hover-image" />
+      {/* ── Cursor-follow hover image (fixed, follows mouse globally) ── */}
+      <div className="divisi__hover-img-wrap" ref={hoverImgWrap}>
+        <img
+          ref={hoverImgEl}
+          alt=""
+          className="divisi__hover-img"
+          onError={(e) => { e.target.style.opacity = 0; }}
+        />
       </div>
+
     </section>
   );
 };

@@ -102,7 +102,6 @@ export default function Berita() {
             <div className="berita__container section__container">
                 <div className="section__header">
                     <div className="section__badge">
-                        <span className="section__badge-dot" />
                         Update
                     </div>
                     <h2 className="berita__title" ref={titleRef}>&nbsp;</h2>

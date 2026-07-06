@@ -579,192 +579,555 @@
   z-index: 10;
 }
 
-/* ===== DIVISI SECTION NEW ===== */
-.divisi-section-new {
-  padding: var(--section-padding) 0;
+/* ============================================================
+   DIVISI SECTION V2 — SKIPER17 STACKED CARDS
+   + Text hover image effect on title
+   ============================================================ */
+
+.divisi-section-v2 {
+  padding: 0;
+  position: relative;
+}
+
+/* ── Section Header ──────────────────────────────────────── */
+.divisi__header-v2 {
+  padding: 80px 5% 48px;
+  text-align: left;
+  max-width: 1600px;
+  margin: 0 auto;
+  z-index: 10;
+  position: relative;
+}
+
+.divisi__header-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+}
+
+.divisi__header-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  display: inline-block;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.divisi__header-sub {
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-top: 10px;
+  opacity: 0.55;
+}
+
+/* ── Sticky stage — GSAP pins this ─────────────────────── */
+.divisi__sticky-stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
   overflow: hidden;
 }
 
-.divisi__list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding-bottom: 80px;
+/* ── Stack container ────────────────────────────────────── */
+.divisi__stack-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 88vh;
+  max-height: 680px;
 }
-.divisi__card {
+
+/* ── Individual stacked card ────────────────────────────── */
+.divisi__stack-card {
+  position: absolute;
+  inset: 0;
   display: flex;
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
-  border-radius: 24px;
+  border-radius: 28px;
   overflow: hidden;
-  min-height: 540px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-  margin-bottom: 24px;
-  will-change: transform, filter;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.04),
+    0 8px 24px rgba(0,0,0,0.07),
+    0 24px 64px rgba(0,0,0,0.05);
+  will-change: transform;
+  transform-origin: center bottom;
+  border-left: 4px solid var(--theme-color, var(--color-accent));
 }
+
+/* ── Card counter badge ─────────────────────────────────── */
+.divisi__card-counter {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  z-index: 5;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 100px;
+  padding: 5px 13px;
+}
+.divisi__card-num {
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  color: var(--theme-color, var(--color-accent));
+}
+.divisi__card-total {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* ── Left pane ──────────────────────────────────────────── */
 .divisi__pane-left {
   flex: 1;
-  padding: 60px;
+  padding: 52px 56px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
 }
+
+/* ── Theme accent stripe ────────────────────────────────── */
+.divisi__theme-accent {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  margin-bottom: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Badge ──────────────────────────────────────────────── */
 .divisi__badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   background: var(--color-bg-secondary);
-  padding: 6px 16px;
+  padding: 5px 14px;
   border-radius: 100px;
   align-self: flex-start;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
+  border: 1px solid var(--color-border);
 }
 .divisi__badge-text {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 .divisi__badge-img {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   object-fit: contain;
 }
+
+/* ── Title (with hover image trigger) ──────────────────── */
 .divisi__title {
   position: relative;
   width: fit-content;
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   color: var(--color-text-primary);
   letter-spacing: -1px;
   cursor: pointer;
+  user-select: none;
 }
 .divisi__title::after {
   content: "";
   position: absolute;
-  left: 0; 
-  bottom: 4px;
-  width: 100%; 
-  height: 4px;
+  left: 0;
+  bottom: 2px;
+  width: 100%;
+  height: 3px;
   background: var(--underline-color, var(--color-accent));
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .divisi__title:hover::after {
   transform: scaleX(1);
 }
+
+/* ── Description ────────────────────────────────────────── */
 .divisi__desc {
-  font-size: 1.05rem;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.65;
   color: var(--color-text-secondary);
-  margin-bottom: 40px;
+  margin-bottom: 28px;
   max-width: 95%;
 }
+
+/* ── Department grid ────────────────────────────────────── */
 .divisi__departments {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px 30px;
+  gap: 24px 20px;
   margin-top: auto;
 }
 .divisi__dept-item {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 .divisi__dept-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
+  flex-shrink: 0;
 }
 .divisi__dept-title {
-  font-size: 1.1rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--color-text-primary);
+  line-height: 1.3;
 }
 .divisi__dept-desc {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--color-text-secondary);
   line-height: 1.5;
 }
 
+/* ── Right pane ─────────────────────────────────────────── */
 .divisi__pane-right {
-  width: 45%;
+  width: 42%;
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 36px 32px;
+  flex-shrink: 0;
 }
 .divisi__illustration {
-  position: relative;
   width: 100%;
-  height: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  border-radius: 18px;
 }
 .divisi__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border-radius: 18px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12);
   transition: transform 0.5s ease;
 }
-.divisi__card:hover .divisi__image {
+.divisi__stack-card:hover .divisi__image {
   transform: scale(1.03);
 }
 
-.divisi__hover-image-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 160px;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 100;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+/* Mobile image strip (hidden on desktop) */
+.divisi__mobile-img-strip {
+  display: none;
 }
 
-.divisi__hover-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+/* ── Explore button ─────────────────────────────────────── */
 .divisi__explore-btn {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
+  margin-top: 20px;
+  align-self: flex-end;
   background: var(--color-text-primary);
   color: var(--color-bg-primary);
-  padding: 16px 32px;
+  padding: 12px 24px;
   border-radius: 12px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
   border: none;
   transition: transform 0.2s ease, opacity 0.2s ease;
+  flex-shrink: 0;
 }
 .divisi__explore-btn:hover {
   transform: translateY(-2px);
-  opacity: 0.9;
+  opacity: 0.88;
 }
 .divisi__explore-icon {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
 }
+.divisi__explore-btn:hover .divisi__explore-icon {
+  transform: translateX(4px);
+}
+
+/* ── Scroll hint ────────────────────────────────────────── */
+.divisi__scroll-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  opacity: 0.4;
+  pointer-events: none;
+  margin: 0;
+}
+
+/* ============================================================
+   HOVER IMAGE EFFECT — cursor follow on title
+   ============================================================ */
+.divisi__hover-img-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 150px;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.18),
+    0 2px 8px rgba(0,0,0,0.10);
+  /* initial hidden state set by GSAP */
+  will-change: transform, opacity;
+}
+.divisi__hover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE — ≤ 1024px tablet
+   ============================================================ */
+@media (max-width: 1024px) {
+  .divisi__stack-container {
+    height: 90vh;
+    max-height: 740px;
+  }
+  .divisi__pane-left {
+    padding: 40px 36px;
+  }
+  .divisi__pane-right {
+    width: 40%;
+    padding: 28px 24px;
+  }
+  .divisi__departments {
+    gap: 18px 14px;
+  }
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE — ≤ 768px (landscape + small tablet)
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Header */
+  .divisi__header-v2 {
+    padding: 40px 5% 20px;
+  }
+
+  /* Sticky stage — padding-top clears the fixed navbar (~60px)
+     sehingga card tidak menempel navbar                         */
+  .divisi__sticky-stage {
+    padding-top: 68px;   /* ← jarak dari navbar */
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 12px;
+    /* align ke atas agar card nempel teks bukan melayang tengah */
+    align-items: flex-start;
+  }
+
+  /* Stack container: must have height for absolute cards */
+  .divisi__stack-container {
+    height: 75vh;
+    max-height: 600px;
+    width: 100%;
+  }
+
+  /* Card: vertical layout on mobile */
+  .divisi__stack-card {
+    flex-direction: column;
+    border-radius: 20px;
+    border-left: none;
+    border-top: 4px solid var(--theme-color, var(--color-accent));
+    /* Restore absolute positioning for GSAP stacking */
+    position: absolute;
+    inset: 0;
+    height: max-content;
+  }
+
+  /* Left pane: JANGAN flex:1 di mobile → konten nempel rapat */
+  .divisi__pane-left {
+    flex: none;           /* ← matikan stretch, ikuti konten */
+    padding: 20px 18px 16px;
+    overflow: visible;
+  }
+
+  .divisi__badge {
+    margin-bottom: 10px;
+  }
+  .divisi__theme-accent {
+    margin-bottom: 10px;
+  }
+
+  .divisi__title {
+    font-size: clamp(1.4rem, 6vw, 1.9rem);
+    margin-bottom: 8px;
+    cursor: default;
+  }
+  .divisi__title:hover::after {
+    transform: scaleX(0);
+  }
+
+  .divisi__desc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Department grid — 2 kolom rapat, icon + nama saja */
+  .divisi__departments {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 6px;
+    margin-top: 0;        /* ← buang margin-top: auto dari desktop */
+  }
+  .divisi__dept-item {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+  .divisi__dept-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 0.72rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .divisi__dept-title {
+    font-size: 0.68rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .divisi__dept-desc {
+    display: none;
+  }
+
+  /* Right pane — image strip langsung di bawah teks */
+  .divisi__pane-right {
+    width: 100%;
+    height: 150px;
+    flex: none;
+    padding: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    background: transparent !important;
+  }
+
+  .divisi__mobile-img-strip {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 0 0 16px 16px;
+  }
+  .divisi__mobile-strip-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+  .divisi__mobile-strip-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.35), transparent);
+  }
+
+  .divisi__illustration {
+    display: none;
+  }
+  .divisi__explore-btn {
+    display: none;
+  }
+
+  .divisi__card-counter {
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+  }
+  .divisi__card-num {
+    font-size: 0.8rem;
+  }
+  .divisi__card-total {
+    font-size: 0.63rem;
+  }
+
+  .divisi__hover-img-wrap {
+    display: none;
+  }
+}
+
+/* ============================================================
+   MOBILE RESPONSIVE — ≤ 480px (small phones)
+   ============================================================ */
+@media (max-width: 480px) {
+  .divisi__header-v2 {
+    padding: 28px 5% 16px;
+  }
+  /* Kurangi sedikit top padding pada layar sangat kecil */
+  .divisi__sticky-stage {
+    padding-top: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+  }
+  .divisi__pane-left {
+    padding: 16px 14px 12px;
+  }
+  .divisi__title {
+    font-size: clamp(1.25rem, 7vw, 1.6rem);
+  }
+  .divisi__departments {
+    gap: 7px 5px;
+  }
+  .divisi__badge-text {
+    font-size: 0.6rem;
+  }
+  .divisi__pane-right {
+    height: 130px;
+  }
+
+}
+
 
 /* ===== PROJECT SECTION ===== */
 .project__grid {

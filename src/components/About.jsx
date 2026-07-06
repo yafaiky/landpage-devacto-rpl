@@ -145,7 +145,6 @@ export default function About() {
       <div className="about__container section__container">
         {/* Badge */}
         <div className="section__badge about__badge">
-          <span className="section__badge-dot" />
           {aboutData.badge}
         </div>
 
