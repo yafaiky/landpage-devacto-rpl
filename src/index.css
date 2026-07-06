@@ -20,6 +20,8 @@
   --color-border: #EDF2F7;
   --color-border-light: rgba(0, 0, 0, 0.05);
   --color-border-hard: #2B2D42;
+  /* Button offset shadow — same dark color as border for 3D effect */
+  --color-shadow-btn: #2B2D42;
 
   /* Typography */
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -42,8 +44,10 @@
   --color-border: #334155;
   --color-border-light: rgba(255, 255, 255, 0.05);
   
-  /* Buttons etc need dark borders in dark mode, so invert this */
-  --color-border-hard: #F8FAFC; 
+  /* Buttons need light borders in dark mode */
+  --color-border-hard: #F8FAFC;
+  /* Shadow is lighter in dark mode so it shows on dark backgrounds */
+  --color-shadow-btn: rgba(248,250,252,0.45);
 }
 
 /* ===== RESET & BASE ===== */

@@ -1,4 +1,4 @@
-﻿/* ===== NAVBAR ===== */
+/* ===== NAVBAR ===== */
 .navbar {
   position: fixed;
   top: 0;
@@ -473,18 +473,18 @@
   border: 2px solid var(--color-border-hard);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 3px 3px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 .hero__btn-primary:hover {
   background: var(--color-accent-dark);
   transform: translate(-2px, -2px);
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 5px 5px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 .hero__btn-primary:active {
   transform: translate(2px, 2px);
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 1px 1px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 .hero__btn-secondary {
@@ -499,18 +499,18 @@
   border: 2px solid var(--color-border-hard);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 3px 3px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 .hero__btn-secondary:hover {
-  background: #F8F9FA;
+  background: var(--color-bg-secondary);
   transform: translate(-2px, -2px);
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 5px 5px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 .hero__btn-secondary:active {
   transform: translate(2px, 2px);
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 1px 1px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 /* ===== SECTION COMMON ===== */
@@ -851,8 +851,8 @@
 .divisi__explore-btn {
   margin-top: 20px;
   align-self: flex-end;
-  background: var(--color-text-primary);
-  color: var(--color-bg-primary);
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
   padding: 12px 24px;
   border-radius: 12px;
   font-weight: 700;
@@ -861,13 +861,18 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  border: none;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  border: 2px solid var(--color-border-hard);
+  box-shadow: 3px 3px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 .divisi__explore-btn:hover {
-  transform: translateY(-2px);
-  opacity: 0.88;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
+}
+.divisi__explore-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 .divisi__explore-icon {
   font-size: 0.9rem;
@@ -2270,17 +2275,17 @@
   cursor: pointer;
   border: 2px solid var(--color-border-hard);
   transition: all 0.2s ease;
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 3px 3px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 .project__slide-btn:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 5px 5px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 .project__slide-btn:active {
   transform: translate(2px, 2px);
-  box-shadow: 3px 3px 0px 0px #2B2D42;
+  box-shadow: 1px 1px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 .project__slide-visual {
@@ -2569,24 +2574,30 @@
 .berita__card-btn-arrow { transition: transform 0.2s; }
 .berita__card-btn:hover .berita__card-btn-arrow { transform: translateX(4px); }
 .berita__footer { display: flex; justify-content: center; }
+
+/* Berita "Lihat Semua" — matches navbar CTA style */
 .berita__all-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 36px;
-  background: var(--color-text-primary);
-  color: #fff;
+  padding: 12px 32px;
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   font-weight: 700;
-  border-radius: 50px;
+  border-radius: 12px;
   cursor: pointer;
-  border: none;
-  transition: all 0.3s ease;
+  border: 2px solid var(--color-border-hard);
+  box-shadow: 3px 3px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
+  transition: all 0.2s ease;
 }
 .berita__all-btn:hover {
-  background: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px var(--color-accent-glow);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
+}
+.berita__all-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 .berita__all-btn-arrow { display: inline-block; transition: transform 0.3s; }
 .berita__all-btn:hover .berita__all-btn-arrow { transform: translate(3px, -3px); }
@@ -2768,22 +2779,23 @@
 .tag__pill {
   padding: 10px 22px;
   background: var(--color-bg-card);
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-border-hard);
   border-radius: 50px;
   font-size: 0.88rem;
   font-weight: 700;
   color: var(--color-text-primary);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 2px 2px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
+  transition: all 0.2s ease;
   letter-spacing: 0.3px;
   will-change: transform;
 }
 .tag__pill:hover {
-  transform: scale(1.1) translateY(-2px);
+  transform: translate(-2px, -2px);
   background: var(--color-accent);
   color: #fff;
   border-color: var(--color-accent);
-  box-shadow: 0 8px 20px var(--color-accent-glow);
+  box-shadow: 4px 4px 0 var(--color-shadow-btn, rgba(43,45,66,0.8));
 }
 
 /* ===== TAUTAN SECTION ===== */
