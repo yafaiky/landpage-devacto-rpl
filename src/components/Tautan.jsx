@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { linksData } from '../data/content.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Text Replace (scramble) for title
 function scrambleText(el, finalText) {
   if (!el) return;
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$';
   let frame = 0;
-  const total = 22;
   let raf;
+  const total = 22;
   const animate = () => {
     if (frame >= total) { el.textContent = finalText; return; }
     const progress = frame / total;
@@ -30,49 +30,49 @@ function scrambleText(el, finalText) {
 export default function Tautan() {
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const [scrambled, setScrambled] = useState(false);
 
-  useEffect(() => {
+  useGSAP(() => {
     const section = sectionRef.current;
     if (!section) return;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const ctx = gsap.context(() => {
-      // Title text replace
-      const titleSt = ScrollTrigger.create({
-        trigger: titleRef.current,
-        start: 'top 85%',
-        onEnter: () => {
-          if (prefersReduced) {
-            if (titleRef.current) titleRef.current.textContent = 'Tautan Berguna';
-          } else {
-            scrambleText(titleRef.current, 'Tautan Berguna');
-          }
+    if (prefersReduced) {
+      if (titleRef.current) titleRef.current.textContent = 'Tautan Berguna';
+      return;
+    }
+
+    const titleSt = ScrollTrigger.create({
+      trigger: titleRef.current,
+      start: 'top 85%',
+      onEnter: () => {
+        if (titleRef.current) {
+          scrambleCleanup = scrambleText(titleRef.current, 'Tautan Berguna');
         }
-      });
-
-      if (!prefersReduced) {
-        // Cards animated entrance
-        gsap.from('.tautan__card', {
-          opacity: 0, y: 40, stagger: 0.1, duration: 0.7, ease: 'power3.out',
-          immediateRender: false,
-          scrollTrigger: { trigger: '.tautan__grid', start: 'top 85%', invalidateOnRefresh: true }
-        });
       }
+    });
 
-      return () => titleSt.kill();
-    }, section);
+    let scrambleCleanup;
 
-    return () => ctx.revert();
-  }, []);
+    gsap.from('.tautan__card', {
+      opacity: 0, y: 40, stagger: 0.1, duration: 0.7, ease: 'power3.out',
+      immediateRender: false,
+      scrollTrigger: { trigger: '.tautan__grid', start: 'top 85%', once: true }
+    });
+
+    return () => {
+      titleSt.kill();
+      if (scrambleCleanup) scrambleCleanup();
+      ScrollTrigger.getAll().forEach(t => {
+        if (section.contains(t.trigger)) t.kill();
+      });
+    };
+  }, { scope: sectionRef, useLayoutEffect: true });
 
   return (
     <section id="tautan" className="tautan section" ref={sectionRef}>
       <div className="tautan__container section__container">
         <div className="section__header">
-          <div className="section__badge">
-            Resources
-          </div>
+          <div className="section__badge">Resources</div>
           <h2 className="section__title tautan__title" ref={titleRef}>&nbsp;</h2>
           <p className="section__subtitle">
             Kumpulan referensi terpilih yang digunakan anggota Devacctto setiap hari.

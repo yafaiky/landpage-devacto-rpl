@@ -1,35 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IoFlashlight, IoFlashlightOutline } from "react-icons/io5";
-import gsap from 'gsap';
 
 export default function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
+  const btnRef = useRef(null);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setIsDark(true);
+    if (isDark) {
       document.documentElement.classList.add('dark');
     }
-  }, []);
+  }, [isDark]);
 
   const toggleTheme = () => {
     const newTheme = !isDark;
     setIsDark(newTheme);
+    newTheme
+      ? document.documentElement.classList.add('dark')
+      : document.documentElement.classList.remove('dark');
 
-    if (newTheme) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    const btn = btnRef.current;
+    if (btn) {
+      btn.style.transition = 'none';
+      btn.style.transform = 'scale(0.75) rotate(-90deg)';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          btn.style.transition = 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1)';
+          btn.style.transform = 'scale(1) rotate(0deg)';
+        });
+      });
     }
-
-    gsap.fromTo('.theme-btn-icon',
-      { scale: 0.5, rotation: -90 },
-      { scale: 1, rotation: 0, duration: 0.5, ease: 'back.out(2)' }
-    );
   };
 
   return (
     <button
+      ref={btnRef}
       onClick={toggleTheme}
       className="navbar__theme-toggle"
       aria-label="Toggle theme"

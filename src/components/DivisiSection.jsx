@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import { useRef, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -13,6 +13,20 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
+const isTouch = typeof window !== "undefined" && !window.matchMedia("(pointer: fine)").matches;
+
+const isLowEnd = (() => {
+  if (typeof navigator === "undefined") return false;
+  const ram = navigator.deviceMemory;
+  const cores = navigator.hardwareConcurrency || 4;
+  return (ram && ram <= 2) || cores <= 2;
+})();
+
+const prefersReduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const skipHover = isTouch || isLowEnd;
+const skipAnim = isLowEnd && prefersReduced;
+
 const divisions = [
   {
     id: "web",
@@ -20,12 +34,12 @@ const divisions = [
     title: "Web Development",
     desc: "At Devaccto, Web Development is the foundation of our digital solutions. We build scalable, high-performance web applications tailored to solve complex business challenges.",
     themeColor: "#3B82F6",
-    Image: "/imageDivisi/web.jpg",
+    Image: "/imageDivisi/web.webp",
     departments: [
       { icon: FaGlobe, title: "Frontend Engineering", desc: "Crafting intuitive and pixel-perfect user interfaces with React, Vue, and modern CSS frameworks." },
       { icon: FaServer, title: "Backend & API", desc: "Building secure and scalable server-side applications, RESTful APIs, and microservices." },
-      { icon: FaPaintBrush, title: "UI/UX Implementation", desc: "Bridging the gap between design and engineering for seamless user experiences." }
-    ]
+      { icon: FaPaintBrush, title: "UI/UX Implementation", desc: "Bridging the gap between design and engineering for seamless user experiences." },
+    ],
   },
   {
     id: "cycec",
@@ -33,12 +47,12 @@ const divisions = [
     title: "Cyber Security",
     desc: "Protecting digital assets is our top priority. The Cyber Security division focuses on identifying vulnerabilities and implementing robust defense mechanisms.",
     themeColor: "#EF4444",
-    Image: "/imageDivisi/cycec.jpg",
+    Image: "/imageDivisi/cycec.webp",
     departments: [
       { icon: FaShieldAlt, title: "Penetration Testing", desc: "Simulating cyber attacks to identify and patch security vulnerabilities in applications." },
       { icon: FaLock, title: "Cryptography", desc: "Implementing advanced encryption standards to secure sensitive user data in transit and at rest." },
-      { icon: FaUserSecret, title: "Security Auditing", desc: "Conducting comprehensive reviews of codebases and infrastructure for compliance." }
-    ]
+      { icon: FaUserSecret, title: "Security Auditing", desc: "Conducting comprehensive reviews of codebases and infrastructure for compliance." },
+    ],
   },
   {
     id: "game",
@@ -46,12 +60,12 @@ const divisions = [
     title: "Game Development",
     desc: "We bring imagination to life through interactive experiences. Our Game Development team combines technical expertise with creative storytelling.",
     themeColor: "#8B5CF6",
-    Image: "/imageDivisi/game.jpg",
+    Image: "/imageDivisi/game.webp",
     departments: [
       { icon: FaGamepad, title: "Gameplay Programming", desc: "Coding core mechanics, player controls, and interactive game physics." },
       { icon: FaUnity, title: "Engine Development", desc: "Optimizing performance and building custom tools using engines like Unity and Unreal." },
-      { icon: FaVrCardboard, title: "AR/VR Experiences", desc: "Pushing boundaries with immersive augmented and virtual reality applications." }
-    ]
+      { icon: FaVrCardboard, title: "AR/VR Experiences", desc: "Pushing boundaries with immersive augmented and virtual reality applications." },
+    ],
   },
   {
     id: "ml",
@@ -59,12 +73,12 @@ const divisions = [
     title: "Machine Learning",
     desc: "Machine Learning is at the heart of our innovation. We design, train, and deploy intelligent models that solve real-world challenges at scale.",
     themeColor: "#6366F1",
-    Image: "/imageDivisi/machine.jpg",
+    Image: "/imageDivisi/machine.webp",
     departments: [
       { icon: FaBrain, title: "ML Research", desc: "Exploring advanced algorithms and deep learning techniques to build intelligent solutions." },
       { icon: FaDatabase, title: "MLOps & Engineering", desc: "Building and scaling reliable pipelines, model deployment, and performance monitoring." },
-      { icon: FaRobot, title: "AI Governance", desc: "Ensuring model transparency, fairness, privacy, and regulatory compliance across initiatives." }
-    ]
+      { icon: FaRobot, title: "AI Governance", desc: "Ensuring model transparency, fairness, privacy, and regulatory compliance across initiatives." },
+    ],
   },
   {
     id: "mobile",
@@ -72,129 +86,119 @@ const divisions = [
     title: "Mobile Development",
     desc: "Connecting users on the go. The Mobile division specializes in crafting high-quality, native and cross-platform apps that deliver exceptional performance.",
     themeColor: "#10B981",
-    Image: "/imageDivisi/mobile.jpg",
+    Image: "/imageDivisi/mobile.webp",
     departments: [
       { icon: FaMobileAlt, title: "Cross-Platform Dev", desc: "Building versatile apps using Flutter and React Native for wider reach." },
       { icon: FaApple, title: "iOS Engineering", desc: "Developing optimized, high-performance applications specifically for the Apple ecosystem." },
-      { icon: FaAndroid, title: "Android Engineering", desc: "Creating robust and scalable applications tailored for the diverse Android market." }
-    ]
-  }
+      { icon: FaAndroid, title: "Android Engineering", desc: "Creating robust and scalable applications tailored for the diverse Android market." },
+    ],
+  },
 ];
 
 const DivisiSection = () => {
   const container = useRef(null);
   const cardRefs = useRef([]);
 
-  // ── Hover Image (cursor-follow) refs ──────────────────────
   const hoverImgWrap = useRef(null);
   const hoverImgEl = useRef(null);
-  const isHovered = useRef(false);
+  const rafPending = useRef(false);
+  const pendingPos = useRef({ x: 0, y: 0 });
 
-  // Set initial transform once
   useGSAP(() => {
-    if (hoverImgWrap.current) {
+    if (hoverImgWrap.current && !skipHover) {
       gsap.set(hoverImgWrap.current, { xPercent: -50, yPercent: -50, scale: 0, opacity: 0 });
     }
-  });
+
+    if (skipAnim) return;
+
+    const totalCards = divisions.length;
+    const cardElements = cardRefs.current.filter(Boolean);
+    if (!cardElements[0]) return;
+
+    cardElements.forEach((card, i) => {
+      gsap.set(card, {
+        zIndex: i + 1,
+        y: i === 0 ? "0%" : "100vh",
+        scale: 1,
+        rotation: 0,
+        transformOrigin: "center bottom",
+        force3D: true,
+      });
+    });
+
+    const scrollTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".divisi__sticky-stage",
+        start: "top top",
+        end: `+=${window.innerHeight * (totalCards - 1)}`,
+        pin: true,
+        scrub: isLowEnd ? 2 : 1,
+        pinSpacing: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: false,
+        fastScrollEnd: true,
+      },
+    });
+
+    for (let i = 0; i < totalCards - 1; i++) {
+      const cur = cardElements[i];
+      const next = cardElements[i + 1];
+      if (!cur || !next) continue;
+
+      scrollTimeline.to(cur, {
+        scale: isLowEnd ? 0.97 : 0.93,
+        rotation: isLowEnd ? 0 : -2,
+        duration: 1,
+        ease: "none",
+      }, i);
+
+      scrollTimeline.to(next, {
+        y: "0%",
+        duration: 1,
+        ease: "none",
+      }, i);
+    }
+
+    return () => {
+      scrollTimeline.kill();
+      scrollTimeline.scrollTrigger?.kill();
+      ScrollTrigger.getAll().forEach(t => {
+        if (container.current?.contains(t.trigger)) t.kill();
+      });
+    };
+  }, { scope: container });
 
   const handleTitleMouseMove = useCallback((e) => {
-    if (!hoverImgWrap.current) return;
-    gsap.to(hoverImgWrap.current, {
-      x: e.clientX,
-      y: e.clientY,
-      duration: 0.45,
-      ease: "power3.out",
-    });
+    if (skipHover || !hoverImgWrap.current) return;
+    pendingPos.current = { x: e.clientX, y: e.clientY };
+    if (!rafPending.current) {
+      rafPending.current = true;
+      requestAnimationFrame(() => {
+        gsap.to(hoverImgWrap.current, {
+          x: pendingPos.current.x,
+          y: pendingPos.current.y,
+          duration: 0.45,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
+        rafPending.current = false;
+      });
+    }
   }, []);
 
   const handleTitleMouseEnter = useCallback((imgSrc) => {
-    if (!hoverImgWrap.current || !hoverImgEl.current) return;
-    isHovered.current = true;
+    if (skipHover || !hoverImgWrap.current || !hoverImgEl.current) return;
     hoverImgEl.current.src = imgSrc;
-    gsap.to(hoverImgWrap.current, {
-      scale: 1,
-      opacity: 1,
-      duration: 0.4,
-      ease: "back.out(1.4)",
-    });
+    gsap.to(hoverImgWrap.current, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.4)" });
   }, []);
 
   const handleTitleMouseLeave = useCallback(() => {
-    if (!hoverImgWrap.current) return;
-    isHovered.current = false;
-    gsap.to(hoverImgWrap.current, {
-      scale: 0,
-      opacity: 0,
-      duration: 0.3,
-      ease: "power2.in",
-    });
+    if (skipHover || !hoverImgWrap.current) return;
+    gsap.to(hoverImgWrap.current, { scale: 0, opacity: 0, duration: 0.3, ease: "power2.in" });
   }, []);
-
-  // ── Stacked Cards GSAP ────────────────────────────────────
-  useGSAP(
-    () => {
-      const totalCards = divisions.length;
-      const cardElements = cardRefs.current.filter(Boolean);
-      if (!cardElements[0]) return;
-
-      cardElements.forEach((card, i) => {
-        if (!card) return;
-        gsap.set(card, {
-          zIndex: i + 1,
-          y: i === 0 ? "0%" : "150vh",
-          scale: 1,
-          rotation: 0,
-          transformOrigin: "center bottom",
-        });
-      });
-
-      const scrollTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".divisi__sticky-stage",
-          start: "top top",
-          end: `+=${window.innerHeight * (totalCards - 1)}`,
-          pin: true,
-          scrub: 0.5,
-          pinSpacing: true,
-        },
-      });
-
-      for (let i = 0; i < totalCards - 1; i++) {
-        const currentCard = cardElements[i];
-        const nextCard = cardElements[i + 1];
-        if (!currentCard || !nextCard) continue;
-
-        // Current card: scale down + slight rotation
-        scrollTimeline.to(
-          currentCard,
-          { scale: 0.9, rotation: -3, duration: 1, ease: "none" },
-          i
-        );
-
-        // Next card: slide up from below
-        scrollTimeline.to(
-          nextCard,
-          { y: "0%", duration: 1, ease: "none" },
-          i
-        );
-      }
-
-      const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
-      if (container.current) resizeObserver.observe(container.current);
-
-      return () => {
-        resizeObserver.disconnect();
-        scrollTimeline.kill();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
-    },
-    { scope: container }
-  );
 
   return (
     <section className="divisi-section-v2" id="divisions" ref={container}>
-
-      {/* ── Section Header ───────────────────────────────── */}
       <div className="divisi__header-v2">
         <div className="divisi__header-eyebrow">
           <span>Divisi Kami</span>
@@ -203,7 +207,6 @@ const DivisiSection = () => {
         <p className="divisi__header-sub">Scroll untuk menjelajahi setiap divisi ↓</p>
       </div>
 
-      {/* ── Pinned sticky stage ──────────────────────────── */}
       <div className="divisi__sticky-stage">
         <div className="divisi__stack-container">
           {divisions.map((div, i) => (
@@ -213,24 +216,19 @@ const DivisiSection = () => {
               ref={(el) => { cardRefs.current[i] = el; }}
               style={{ "--theme-color": div.themeColor }}
             >
-              {/* Card counter */}
               <div className="divisi__card-counter">
                 <span className="divisi__card-num">{String(i + 1).padStart(2, "0")}</span>
                 <span className="divisi__card-total">/ {String(divisions.length).padStart(2, "0")}</span>
               </div>
 
-              {/* ── LEFT PANE ── */}
               <div className="divisi__pane-left">
-                {/* Badge */}
                 <div className="divisi__badge">
-                  <img src="/devacto.png" alt="Devaccto" className="divisi__badge-img" />
+                  <img src="/devacto.webp" alt="Devaccto" className="divisi__badge-img" decoding="async" />
                   <span className="divisi__badge-text">DIVISI DEVACTO IT</span>
                 </div>
 
-                {/* Accent bar */}
                 <div className="divisi__theme-accent" style={{ backgroundColor: div.themeColor }} />
 
-                {/* ★ Title with hover-image effect ★ */}
                 <h3
                   className="divisi__title"
                   style={{ "--underline-color": div.themeColor }}
@@ -243,7 +241,6 @@ const DivisiSection = () => {
 
                 <p className="divisi__desc">{div.desc}</p>
 
-                {/* Departments */}
                 <div className="divisi__departments">
                   {div.departments.map((dept, j) => (
                     <div className="divisi__dept-item" key={j}>
@@ -259,16 +256,29 @@ const DivisiSection = () => {
                 </div>
               </div>
 
-              {/* ── RIGHT PANE ── */}
               <div className="divisi__pane-right" style={{ background: `${div.themeColor}12` }}>
-                {/* Mobile-only image strip */}
                 <div className="divisi__mobile-img-strip">
-                  <img src={div.Image} alt={div.title} className="divisi__mobile-strip-img" />
-                  <div className="divisi__mobile-strip-overlay" style={{ background: `linear-gradient(to right, ${div.themeColor}22, transparent)` }} />
+                  <img
+                    src={div.Image}
+                    alt={div.title}
+                    className="divisi__mobile-strip-img"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div
+                    className="divisi__mobile-strip-overlay"
+                    style={{ background: `linear-gradient(to right, ${div.themeColor}22, transparent)` }}
+                  />
                 </div>
 
                 <div className="divisi__illustration">
-                  <img src={div.Image} alt={div.title} className="divisi__image" />
+                  <img
+                    src={div.Image}
+                    alt={div.title}
+                    className="divisi__image"
+                    loading={i === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
                 </div>
 
                 <button className="divisi__explore-btn">
@@ -280,20 +290,21 @@ const DivisiSection = () => {
           ))}
         </div>
 
-        {/* Scroll hint */}
         <p className="divisi__scroll-hint">SCROLL TO EXPLORE ↓</p>
       </div>
 
-      {/* ── Cursor-follow hover image (fixed, follows mouse globally) ── */}
-      <div className="divisi__hover-img-wrap" ref={hoverImgWrap}>
-        <img
-          ref={hoverImgEl}
-          alt=""
-          className="divisi__hover-img"
-          onError={(e) => { e.target.style.opacity = 0; }}
-        />
-      </div>
-
+      {!skipHover && (
+        <div className="divisi__hover-img-wrap" ref={hoverImgWrap}>
+          <img
+            ref={hoverImgEl}
+            src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            alt=""
+            className="divisi__hover-img"
+            onError={(e) => { e.target.style.opacity = 0; }}
+            decoding="async"
+          />
+        </div>
+      )}
     </section>
   );
 };

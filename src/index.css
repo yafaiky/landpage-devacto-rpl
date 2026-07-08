@@ -1,32 +1,23 @@
 @import "tailwindcss";
 
-/* ===== DESIGN TOKENS ===== */
 :root {
-  /* Colors */
   --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F6F9FC; /* Light gray/blue */
+  --color-bg-secondary: #F6F9FC;
   --color-bg-card: #FFFFFF;
   --color-bg-card-hover: #F0F4F8;
-  --color-accent: #E63946; /* Premium Balanced Red */
+  --color-accent: #E63946;
   --color-accent-dark: #C1121F;
   --color-accent-glow: rgba(230, 57, 70, 0.25);
-  
-  --color-secondary: #00D2D3; /* Teal remains as contrast */
-  --color-warning: #F25C54; /* Soft Coral Red instead of Orange/Yellow */
-  
-  --color-text-primary: #2B2D42; /* Dark navy */
+  --color-secondary: #00D2D3;
+  --color-warning: #F25C54;
+  --color-text-primary: #2B2D42;
   --color-text-secondary: #5D607B;
   --color-text-muted: #8D99AE;
   --color-border: #EDF2F7;
   --color-border-light: rgba(0, 0, 0, 0.05);
   --color-border-hard: #2B2D42;
-  /* Button offset shadow — same dark color as border for 3D effect */
   --color-shadow-btn: #2B2D42;
-
-  /* Typography */
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-
-  /* Spacing */
   --section-padding: 100px;
   --container-max: 1200px;
 }
@@ -36,30 +27,28 @@
   --color-bg-secondary: #1E293B;
   --color-bg-card: #1E293B;
   --color-bg-card-hover: #334155;
-  
   --color-text-primary: #F8FAFC;
   --color-text-secondary: #CBD5E1;
   --color-text-muted: #94A3B8;
-  
   --color-border: #334155;
   --color-border-light: rgba(255, 255, 255, 0.05);
-  
-  /* Buttons need light borders in dark mode */
   --color-border-hard: #F8FAFC;
-  /* Shadow is lighter in dark mode so it shows on dark backgrounds */
   --color-shadow-btn: rgba(248,250,252,0.45);
 }
 
-/* ===== RESET & BASE ===== */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+body, .navbar, .section, .hero, [class*="__card"], [class*="__btn"],
+[class*="__link"], [class*="__cta"], [class*="toggle"] {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.3s ease;
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -67,13 +56,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: var(--color-bg-primary);
-  background-image: 
-    radial-gradient(circle at 15% 50%, rgba(255, 90, 95, 0.03), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(0, 210, 211, 0.03), transparent 25%);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -96,40 +81,39 @@ button {
   font-family: inherit;
 }
 
-/* ===== SCROLLBAR ===== */
+.hero__shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.4;
+  will-change: auto;
+}
+
+@keyframes hero-logo-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-22px) rotate(3deg); }
+}
+
+.hero__bg-logo--float {
+  animation: hero-logo-float 4s ease-in-out infinite;
+  will-change: transform;
+}
+
 ::-webkit-scrollbar {
   width: 10px
 }
+
 ::-webkit-scrollbar-track {
   background: var(--color-bg-secondary);
 }
+
 ::-webkit-scrollbar-thumb {
   background: #CBD5E1;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
-}
-
-/* ===== UTILITY ANIMATIONS ===== */
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(40px) scale(0.95);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(-5px) scale(1.02);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 @keyframes pulse-glow {
@@ -144,8 +128,8 @@ button {
   75% { transform: translateY(-15px) rotate(-2deg); }
 }
 
-@keyframes popIn {
-  0% { opacity: 0; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: 1; transform: scale(1); }
+img {
+  aspect-ratio: auto;
+  max-width: 100%;
+  display: block;
 }

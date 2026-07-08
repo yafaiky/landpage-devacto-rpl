@@ -23,7 +23,6 @@ export default function Jadwal() {
     const ctx = gsap.context(() => {
       if (prefersReduced) return;
 
-      // Animated connecting line
       gsap.from('.jadwal__line-fill', {
         scaleY: 0,
         transformOrigin: 'top center',
@@ -37,20 +36,18 @@ export default function Jadwal() {
         }
       });
 
-      // Cards sequential reveal
       gsap.from('.jadwal__item', {
         opacity: 0, x: -40,
         stagger: 0.12, duration: 0.7, ease: 'power3.out',
         immediateRender: false,
-        scrollTrigger: { trigger: '.jadwal__timeline', start: 'top 85%', invalidateOnRefresh: true }
+        scrollTrigger: { trigger: '.jadwal__timeline', start: 'top 85%', once: true }
       });
 
-      // Date badges pop
       gsap.from('.jadwal__date-badge', {
         scale: 0, opacity: 0, stagger: 0.12,
         duration: 0.5, ease: 'back.out(2)',
         immediateRender: false,
-        scrollTrigger: { trigger: '.jadwal__timeline', start: 'top 85%', invalidateOnRefresh: true }
+        scrollTrigger: { trigger: '.jadwal__timeline', start: 'top 85%', once: true }
       });
     }, section);
 
@@ -72,20 +69,17 @@ export default function Jadwal() {
         </div>
 
         <div className="jadwal__timeline">
-          {/* Vertical connecting line */}
           <div className="jadwal__line">
             <div className="jadwal__line-fill" />
           </div>
 
           {scheduleData.map((event) => (
             <div key={event.id} className="jadwal__item">
-              {/* Date Badge */}
               <div className="jadwal__date-badge" style={{ '--status-color': statusColor[event.status] }}>
                 <span className="jadwal__date-day">{event.date}</span>
                 <span className="jadwal__date-year">{event.year}</span>
               </div>
 
-              {/* Card */}
               <div className="jadwal__card" data-status={event.status}>
                 <div className="jadwal__card-header">
                   <h3 className="jadwal__card-title">{event.title}</h3>

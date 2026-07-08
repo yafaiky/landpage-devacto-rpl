@@ -1,23 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef();
+  const navRef = useRef();
 
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-
+  useGSAP(() => {
     if (isOpen) {
-      // Menu expansion animation
       gsap.to(menuRef.current, {
         clipPath: "circle(150% at 50px 40px)",
         duration: 0.8,
         ease: "power4.inOut",
       });
 
-      // Link stagger animation
       gsap.fromTo(
         ".navbar__mobile-link",
         { y: 50, opacity: 0, rotateX: -45 },
@@ -32,21 +30,16 @@ const Navbar = () => {
         },
       );
     } else {
-      // Close animation
       gsap.to(menuRef.current, {
         clipPath: "circle(0% at 50px 40px)",
         duration: 0.6,
         ease: "power4.in",
       });
     }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  }, { scope: navRef, dependencies: [isOpen], useLayoutEffect: true });
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" ref={navRef}>
       <div className="navbar__inner">
 
         <div className="navbar__left">
@@ -62,7 +55,6 @@ const Navbar = () => {
           <a href="#" className={`navbar__logo ${isOpen ? "open" : ""}`}>
             Devaccto
           </a>
-          
         </div>
 
         <div className="navbar__right">
@@ -81,7 +73,7 @@ const Navbar = () => {
 
         <div className="navbar__mobile-links">
           {["Home", "Projects", "Divisi", "Offer", "Contact"].map(
-            (item, idx) => (
+            (item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -93,7 +85,6 @@ const Navbar = () => {
             ),
           )}
         </div>
-
       </div>
     </nav>
   );
