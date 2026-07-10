@@ -72,7 +72,7 @@ const Navbar = () => {
         <div className="navbar__mobile-grid"></div>
 
         <div className="navbar__mobile-links">
-          {["Home", "Projects", "Divisi", "Offer", "Contact"].map(
+          {["About", "Divisions", "Projects", "Berita", "Tag" , "Tautan" ].map(
             (item) => (
               <a
                 key={item}
