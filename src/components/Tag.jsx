@@ -5,7 +5,7 @@ import { tagData } from '../data/content.js';
 import {
   SiPhp, SiMysql, SiLaravel, SiPython, SiCplusplus,
   SiVuedotjs, SiGit, SiLinux, SiDocker, SiFigma,
-  SiKotlin, SiFirebase, SiBootstrap, SiTailwindcss, SiNodedotjs
+  SiKotlin, SiBootstrap, SiTailwindcss, SiNodedotjs
 } from 'react-icons/si';
 import { FaJava, FaPenNib, FaServer } from 'react-icons/fa6';
 
@@ -25,7 +25,6 @@ const iconMap = {
   "UI/UX": <FaPenNib />,
   "Figma": <SiFigma />,
   "Kotlin": <SiKotlin />,
-  "Firebase": <SiFirebase />,
   "REST API": <FaServer />,
   "Bootstrap": <SiBootstrap />,
   "Tailwind": <SiTailwindcss />,

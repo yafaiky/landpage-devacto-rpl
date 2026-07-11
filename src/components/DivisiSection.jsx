@@ -280,11 +280,6 @@ const DivisiSection = () => {
                     decoding="async"
                   />
                 </div>
-
-                <button className="divisi__explore-btn">
-                  Explore Departments
-                  <FaArrowRight className="divisi__explore-icon" />
-                </button>
               </div>
             </div>
           ))}

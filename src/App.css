@@ -1835,38 +1835,47 @@
 
 .berita__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(16px, 2vw, 24px);
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 3vw, 32px);
   margin-bottom: 48px;
 }
 
 .berita__card {
-  background: var(--color-bg-card);
-  border-radius: 20px;
+  background: transparent;
+  border-radius: 0;
   overflow: hidden;
-  border: 1.5px solid var(--color-border);
+  border: none;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: stretch;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .berita__card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 24px 48px rgba(0,0,0,0.08);
-  border-color: var(--color-accent-glow);
+  transform: translateY(-4px);
+  background: var(--color-bg-card);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.04);
 }
 
 .berita__card-img-wrap {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 16/9;
+  width: 35%;
+  min-height: 220px;
+  flex-shrink: 0;
+  border-radius: 12px;
 }
 
 .berita__card-img {
   width: 100%; height: 100%;
   object-fit: cover;
+  position: absolute;
+  top: 0; left: 0;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.berita__card:hover .berita__card-img { transform: scale(1.07); }
+.berita__card:hover .berita__card-img { transform: scale(1.05); }
 
 .berita__card-category {
   position: absolute;
@@ -1878,40 +1887,49 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 4px;
 }
 
 .berita__card-body {
-  padding: clamp(16px, 2vw, 24px);
+  padding: clamp(16px, 2.5vw, 32px) clamp(24px, 3.5vw, 40px);
   display: flex;
   flex-direction: column;
+  justify-content: center;
   flex: 1;
 }
 
+.berita__card-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
 .berita__card-date {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
+  color: var(--color-text-secondary);
+}
+
+.berita__card-author {
+  color: var(--color-text-secondary);
 }
 
 .berita__card-title {
-  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-  font-weight: 700;
+  font-size: clamp(1.2rem, 1.5vw, 1.6rem);
+  font-weight: 800;
   font-family: "Outfit", sans-serif;
-  line-height: 1.4;
-  margin-bottom: 10px;
+  line-height: 1.3;
+  margin-bottom: 12px;
   color: var(--color-text-primary);
 }
 
 .berita__card-excerpt {
-  font-size: clamp(0.78rem, 1vw, 0.85rem);
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
   color: var(--color-text-secondary);
-  line-height: 1.65;
-  flex: 1;
-  margin-bottom: 20px;
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: 24px;
 }
 
 .berita__card-btn {
@@ -2608,14 +2626,19 @@
   .jadwal__date-badge { min-width: 52px; }
   .jadwal__item { gap: 16px; }
   .tautan__grid, .berita__grid { grid-template-columns: 1fr; }
-  .berita__card-body { padding: 14px; }
-  .berita__card-title { font-size: 0.95rem; }
-  .berita__card-excerpt { font-size: 0.8rem; }
+  .berita__card-img-wrap { width: 35%; min-height: 120px; border-radius: 8px; }
+  .berita__card-category { font-size: 0.5rem; padding: 2px 6px; top: 6px; left: 6px; }
+  .berita__card-body { padding: 12px; justify-content: flex-start; }
+  .berita__card-meta { flex-direction: column; align-items: flex-start; gap: 4px; font-size: 0.7rem; margin-bottom: 8px; }
+  .berita__card-title { font-size: 0.95rem; line-height: 1.25; margin-bottom: 8px; }
+  .berita__card-excerpt { font-size: 0.75rem; margin-bottom: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .berita__card-btn { font-size: 0.75rem; }
 }
 
 @media (max-width: 900px) {
   .berita__grid { grid-template-columns: 1fr; }
   .tautan__grid { grid-template-columns: repeat(2, 1fr); }
+  .berita__card-meta { flex-direction: column; align-items: flex-start; gap: 6px; }
 }
 
 @media (max-width: 576px) {
