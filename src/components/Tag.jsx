@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { tagData } from '../data/content.js';
-import { 
-  SiPhp, SiMysql, SiLaravel, SiPython, SiCplusplus, 
-  SiVuedotjs, SiGit, SiLinux, SiDocker, SiFigma, 
-  SiKotlin, SiFirebase, SiBootstrap, SiTailwindcss, SiNodedotjs 
+import {
+  SiPhp, SiMysql, SiLaravel, SiPython, SiCplusplus,
+  SiVuedotjs, SiGit, SiLinux, SiDocker, SiFigma,
+  SiKotlin, SiFirebase, SiBootstrap, SiTailwindcss, SiNodedotjs
 } from 'react-icons/si';
 import { FaJava, FaPenNib, FaServer } from 'react-icons/fa6';
 
@@ -48,7 +48,7 @@ export default function Tag() {
         stagger: { amount: 0.8, from: 'random' },
         ease: 'back.out(1.4)',
         immediateRender: false,
-        scrollTrigger: { trigger: section, start: 'top 85%' }
+        scrollTrigger: { trigger: section, start: 'top 85%', once: true }
       });
     }, section);
 
@@ -59,10 +59,7 @@ export default function Tag() {
     <section id="tag" className="tag section section--grey" ref={sectionRef}>
       <div className="tag__container">
         <div className="section__header">
-          <div className="section__badge">
-            <span className="section__badge-dot" />
-            Teknologi
-          </div>
+          <div className="section__badge">Teknologi</div>
           <h2 className="tag__title section__title">Stack &amp; Tools</h2>
           <p className="section__subtitle">
             Teknologi yang dikuasai dan digunakan oleh anggota Devacctto dalam proyek nyata.

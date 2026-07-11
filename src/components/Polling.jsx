@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { pollingData } from '../data/content.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,40 +12,39 @@ export default function Polling() {
   const [voted, setVoted] = useState(false);
   const [votes, setVotes] = useState(pollingData.options.map((o) => o.votes));
   const total = votes.reduce((a, b) => a + b, 0);
+  const barRefs = useRef([]);
+  const pctRefs = useRef([]);
 
-  // Entrance animation
-  useEffect(() => {
+  useGSAP(() => {
     const section = sectionRef.current;
     if (!section) return;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const ctx = gsap.context(() => {
-      if (prefersReduced) return;
-      gsap.from('.polling__container', {
-        opacity: 0, y: 50,
-        duration: 0.9, ease: 'power3.out',
-        immediateRender: false,
-        scrollTrigger: { trigger: section, start: 'top 85%', invalidateOnRefresh: true }
-      });
-      gsap.from('.polling__option', {
-        opacity: 0, x: -30, stagger: 0.1, duration: 0.6,
-        immediateRender: false,
-        scrollTrigger: { trigger: '.polling__options', start: 'top 90%', invalidateOnRefresh: true }
-      });
-    }, section);
+    if (prefersReduced) return;
 
-    return () => ctx.revert();
-  }, []);
+    gsap.from('.polling__container', {
+      opacity: 0, y: 50,
+      duration: 0.9, ease: 'power3.out',
+      immediateRender: false,
+      scrollTrigger: { trigger: section, start: 'top 85%', once: true }
+    });
+    gsap.from('.polling__option', {
+      opacity: 0, x: -30, stagger: 0.1, duration: 0.6,
+      immediateRender: false,
+      scrollTrigger: { trigger: '.polling__options', start: 'top 90%', once: true }
+    });
+  }, { scope: sectionRef });
 
-  // Animate progress bars after vote
-  useEffect(() => {
+  useGSAP(() => {
     if (!voted) return;
-    document.querySelectorAll('.polling__bar-fill').forEach((bar, i) => {
+
+    barRefs.current.forEach((bar, i) => {
+      if (!bar) return;
       const pct = (votes[i] / total) * 100;
       gsap.fromTo(bar, { width: '0%' }, { width: `${pct}%`, duration: 1, delay: i * 0.08, ease: 'power2.out' });
     });
-    // Animate counters
-    document.querySelectorAll('.polling__pct').forEach((el, i) => {
+    pctRefs.current.forEach((el, i) => {
+      if (!el) return;
       const pct = Math.round((votes[i] / total) * 100);
       gsap.fromTo({ val: 0 }, { val: pct },
         { duration: 1, delay: i * 0.08, ease: 'power2.out',
@@ -52,15 +52,15 @@ export default function Polling() {
         }
       );
     });
-  }, [voted]);
+  }, { scope: sectionRef, dependencies: [voted] });
 
-  const handleVote = () => {
+  const handleVote = useCallback(() => {
     if (selected === null || voted) return;
     const next = [...votes];
     next[selected] += 1;
     setVotes(next);
     setVoted(true);
-  };
+  }, [selected, voted, votes]);
 
   return (
     <section id="polling" className="polling section" ref={sectionRef}>
@@ -94,11 +94,12 @@ export default function Polling() {
                       {selected === i && <span className="polling__check-inner" />}
                     </div>
                     <span className="polling__option-label">{opt.label}</span>
-                    {voted && <span className="polling__pct">{pct}%</span>}
+                    {voted && <span className="polling__pct" ref={el => pctRefs.current[i] = el}>{pct}%</span>}
                   </div>
                   {voted && (
                     <div className="polling__bar">
                       <div
+                        ref={el => barRefs.current[i] = el}
                         className="polling__bar-fill"
                         style={{
                           width: `${pct}%`,

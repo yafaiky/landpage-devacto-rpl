@@ -1,123 +1,84 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import ProjectCard, { cards } from "./ProjectCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-  {
-    title: "Lorem ipsum dolor",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
-    color: "var(--color-accent)",
-  },
-  {
-    title: "Lorem ipsum dolor",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
-    color: "var(--color-secondary)",
-  },
-  {
-    title: "Lorem ipsum dolor",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
-    color: "var(--color-warning)",
-  },
-  {
-    title: "Lorem ipsum dolor",
-    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.",
-    color: "#9D4EDD",
-  },
-];
+const isLowEnd = (() => {
+  if (typeof navigator === "undefined") return false;
+  const ram = navigator.deviceMemory;
+  const cores = navigator.hardwareConcurrency || 4;
+  return (ram && ram <= 2) || cores <= 2;
+})();
 
-const ProjectSection = () => {
-  const container = useRef();
-  const wrapper = useRef();
+export default function ProjectSection() {
+  const sectionRef = useRef(null);
+  const viewportRef = useRef(null);
+  const trackRef = useRef(null);
 
-  useGSAP(
-    () => {
-      const sections = gsap.utils.toArray(".project__slide");
+  useGSAP(() => {
+    if (isLowEnd) return;
 
-      gsap.to(sections, {
-        xPercent: -100 * (sections.length - 1),
-        ease: "none",
-        scrollTrigger: {
-          trigger: container.current,
-          pin: true,
-          scrub: 1,
-          snap: 1 / (sections.length - 1),
-          end: () => "+=" + wrapper.current.offsetWidth,
-        },
-      });
-    },
-    { scope: container },
-  );
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) return;
+
+    const getMaxScroll = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+
+    if (getMaxScroll() <= 0) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: () => `+=${getMaxScroll() + window.innerHeight}`,
+        pin: true,
+        pinSpacing: true,
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    tl.to(track, {
+      x: () => -getMaxScroll(),
+      ease: "none",
+      duration: 1,
+    });
+
+    ScrollTrigger.refresh();
+
+    const onResize = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
+      tl.kill();
+      tl.scrollTrigger?.kill();
+    };
+  }, { scope: sectionRef });
 
   return (
-    <section
-      className="section project-horizontal"
-      id="projects"
-      ref={container}
-    >
-      <div className="section__header project__header">
-        <h2 className="section__title project__title">Proyek Unggulan</h2>
+    <section className="project-section" id="projects" ref={sectionRef}>
+      <div className="project__header">
+        <span className="project__eyebrow">PROJECT SHOWCASE</span>
+        <h2 className="project__title">Karya Terbaik Kami</h2>
+        <p className="project__desc">
+          Solusi nyata yang kami bangun untuk klien dan industri.
+        </p>
       </div>
 
-      <div
-        className="project__wrapper"
-        ref={wrapper}
-        style={{
-          width: `${projects.length * 100}vw`,
-        }}
-      >
-        {projects.map((proj, i) => (
-          <div className="project__slide" key={i}>
-            {/* Number background - positioned to not interfere with text */}
-            <span
-              className="project__slide-number"
-              style={{ color: proj.color }}
-            >
-              0{i + 1}
-            </span>
-
-            <div className="project__slide-content">
-              <div className="project__slide-info">
-                <h3 className="project__slide-title">{proj.title}</h3>
-                <p className="project__slide-desc">{proj.desc}</p>
-                <button
-                  className="project__slide-btn"
-                  style={{ background: proj.color }}
-                >
-                  View Project Case Study
-                </button>
-              </div>
-
-              <div className="project__slide-visual">
-                <div className="project__slide-visual-inner">
-                  {/* Artistic background text */}
-                  <div
-                    className="project__slide-bgtext"
-                    style={{ color: proj.color }}
-                  >
-                    {proj.title.split(" ")[0]}
-                  </div>
-
-                  {/* Floating badge */}
-                  <div
-                    className="project__slide-badge"
-                    style={{
-                      color: proj.color,
-                      border: `2px solid ${proj.color}20`,
-                    }}
-                  >
-                    Live Project 0{i + 1}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="project__viewport" ref={viewportRef}>
+        <div className="project__track" ref={trackRef}>
+          {cards.map((card, i) => (
+            <ProjectCard key={i} card={card} />
+          ))}
+        </div>
       </div>
     </section>
   );
-};
-
-export default ProjectSection;
+}

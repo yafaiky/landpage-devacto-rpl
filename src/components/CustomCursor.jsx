@@ -1,48 +1,64 @@
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+
+const hasFinePointer = typeof window !== "undefined" && window.matchMedia('(pointer: fine)').matches;
+
+const isLowEnd = (() => {
+  if (typeof navigator === "undefined") return false;
+  const ram = navigator.deviceMemory;
+  const cores = navigator.hardwareConcurrency || 4;
+  return (ram && ram <= 2) || cores <= 2;
+})();
+
+const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+if (!hasFinePointer || isLowEnd || isMobile) {
+  // Skip rendering
+}
 
 export default function CustomCursor() {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
 
   useEffect(() => {
+    if (!hasFinePointer || isLowEnd || isMobile) return;
+
     const dot = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
 
-    // Check touch device
-    if (!window.matchMedia('(pointer: fine)').matches) return;
-
     let mouseX = 0, mouseY = 0;
     let ringX = 0, ringY = 0;
     let raf;
+    let isRunning = true;
 
     const onMouseMove = (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      gsap.set(dot, { x: mouseX, y: mouseY });
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
     };
 
     const lerp = (s, e, t) => s + (e - s) * t;
 
     const tick = () => {
+      if (!isRunning) return;
       ringX = lerp(ringX, mouseX, 0.12);
       ringY = lerp(ringY, mouseY, 0.12);
-      gsap.set(ring, { x: ringX, y: ringY });
+      ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
 
-    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-    // Magnetic on interactive elements
     const onEnter = () => {
-      gsap.to(ring, { scale: 1.6, opacity: 0.8, duration: 0.3 });
-      gsap.to(dot, { scale: 0.5, duration: 0.3 });
+      ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) scale(1.6)`;
+      ring.style.opacity = '0.8';
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%) scale(0.5)`;
     };
     const onLeave = () => {
-      gsap.to(ring, { scale: 1, opacity: 0.5, duration: 0.3 });
-      gsap.to(dot, { scale: 1, duration: 0.3 });
+      ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) scale(1)`;
+      ring.style.opacity = '0.5';
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%) scale(1)`;
     };
 
     const interactives = document.querySelectorAll('a, button, .about__keyword');
@@ -52,6 +68,7 @@ export default function CustomCursor() {
     });
 
     return () => {
+      isRunning = false;
       window.removeEventListener('mousemove', onMouseMove);
       cancelAnimationFrame(raf);
       interactives.forEach((el) => {
@@ -60,6 +77,8 @@ export default function CustomCursor() {
       });
     };
   }, []);
+
+  if (!hasFinePointer || isLowEnd || isMobile) return null;
 
   return (
     <>

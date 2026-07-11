@@ -1,14 +1,6 @@
-// ============================================================
-// src/data/content.js
-// Devacctto RPL — All website content in one place.
-// Never hardcode text in JSX. Edit here to update content.
-// ============================================================
-
-// ── ABOUT ────────────────────────────────────────────────────
 export const aboutData = {
   badge: "Tentang Kami",
-  headline:
-    "Kami percaya siswa RPL terbaik belajar dari deadline, bug produksi, dan pull request yang ditolak reviewer.",
+  headline: "Kami percaya siswa RPL terbaik belajar dari deadline, bug produksi, dan pull request yang ditolak reviewer.",
   body: "Devacctto — singkatan dari Development Acceleration Troops — adalah ekstrakurikuler Rekayasa Perangkat Lunak yang berfokus pada pembangunan produk nyata, bukan sekadar latihan soal.",
   stats: [
     { value: "42+", label: "Proyek Open-Source" },
@@ -16,47 +8,41 @@ export const aboutData = {
     { value: "89",  label: "Alumni ke Industri" },
     { value: "2018",label: "Berdiri Sejak" },
   ],
-  // Keywords with hover images (relative path from /public)
   keywords: [
-    { word: "Devacctto",  image: "/devacto.png",   alt: "Logo Devacctto" },
-    { word: "deadline",   image: "/deadline.jpg",   alt: "Suasana deadline" },
-    { word: "produksi",   image: "/produksi.jpg",   alt: "Bug produksi" },
-    { word: "Community",  image: "/comunity.jpg",   alt: "Komunitas Devacctto" },
+    { word: "Devacctto",  image: "/devacto.webp",   alt: "Logo Devacctto" },
+    { word: "deadline",   image: "/deadline.webp",   alt: "Suasana deadline" },
+    { word: "produksi",   image: "/produksi.webp",   alt: "Bug produksi" },
+    { word: "Community",  image: "/comunity.webp",   alt: "Komunitas Devacctto" },
   ],
 };
 
-// ── BERITA ───────────────────────────────────────────────────
 export const newsData = [
   {
     id: 1,
     category: "Workshop",
     date: "Sabtu, 19 Oktober 2024",
     title: "Workshop Laravel 11: Membangun Sistem Inventaris Sekolah",
-    excerpt:
-      "09.00–15.00 WIB di Lab RPL-2. Peserta wajib bawa laptop dengan PHP 8.2+, Composer, dan MySQL 8. Pendaftaran via forum, kuota 30 orang.",
-    image: "/banner.png",
+    excerpt: "09.00–15.00 WIB di Lab RPL-2. Peserta wajib bawa laptop dengan PHP 8.2+, Composer, dan MySQL 8. Pendaftaran via forum, kuota 30 orang.",
+    image: "/banner.webp",
   },
   {
     id: 2,
     category: "Prestasi",
     date: "08 Oktober 2024",
     title: "Tim Devacctto Juara 2 LKS Provinsi — kategori Web Technologies",
-    excerpt:
-      "Selamat untuk Bagas Wirawan, Putri Anjani, dan Aldi Pratama yang membawa pulang medali perak. Lanjut ke tingkat nasional di Bandung, November 2024.",
-    image: "/banner.png",
+    excerpt: "Selamat untuk Bagas Wirawan, Putri Anjani, dan Aldi Pratama yang membawa pulang medali perak. Lanjut ke tingkat nasional di Bandung, November 2024.",
+    image: "/banner.webp",
   },
   {
     id: 3,
     category: "Rekrutmen",
     date: "25 Oktober 2024",
     title: "Rekrutmen Anggota Baru Batch 2024/2025 Dibuka",
-    excerpt:
-      "Kuota 30 siswa kelas X & XI. Syarat: minat besar di pemrograman, sanggup commit minimal 8 jam/minggu, dan ikut seleksi coding 90 menit. Form ditutup 25 Oktober 2024.",
-    image: "/banner.png",
+    excerpt: "Kuota 30 siswa kelas X & XI. Syarat: minat besar di pemrograman, sanggup commit minimal 8 jam/minggu, dan ikut seleksi coding 90 menit. Form ditutup 25 Oktober 2024.",
+    image: "/banner.webp",
   },
 ];
 
-// ── JADWAL ───────────────────────────────────────────────────
 export const scheduleData = [
   {
     id: 1,
@@ -126,7 +112,6 @@ export const scheduleData = [
   },
 ];
 
-// ── POLLING ──────────────────────────────────────────────────
 export const pollingData = {
   question: "Teknologi apa yang ingin kamu pelajari di Devacctto semester ini?",
   options: [
@@ -139,7 +124,6 @@ export const pollingData = {
   totalVotes: 143,
 };
 
-// ── TAG ──────────────────────────────────────────────────────
 export const tagData = [
   "PHP", "MySQL", "Laravel", "Java", "Python",
   "C++", "Vue", "Git", "Linux", "Docker",
@@ -147,7 +131,6 @@ export const tagData = [
   "REST API", "Bootstrap", "Tailwind", "Node.js",
 ];
 
-// ── TAUTAN ───────────────────────────────────────────────────
 export const linksData = [
   {
     id: 1,
