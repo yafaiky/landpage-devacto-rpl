@@ -3,9 +3,7 @@ export const aboutData = {
   headline: "Kami percaya siswa RPL terbaik belajar dari deadline, bug produksi, dan pull request yang ditolak reviewer.",
   body: "Devacctto — singkatan dari Development Acceleration Troops — adalah ekstrakurikuler Rekayasa Perangkat Lunak yang berfokus pada pembangunan produk nyata, bukan sekadar latihan soal.",
   stats: [
-    { value: "42+", label: "Proyek Open-Source" },
     { value: "6×",  label: "Juara LKS Provinsi" },
-    { value: "89",  label: "Alumni ke Industri" },
     { value: "2018",label: "Berdiri Sejak" },
   ],
   keywords: [
@@ -127,7 +125,7 @@ export const pollingData = {
 export const tagData = [
   "PHP", "MySQL", "Laravel", "Java", "Python",
   "C++", "Vue", "Git", "Linux", "Docker",
-  "UI/UX", "Figma", "Kotlin", "Firebase",
+  "UI/UX", "Figma", "Kotlin", 
   "REST API", "Bootstrap", "Tailwind", "Node.js",
 ];
 
