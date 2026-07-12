@@ -25,8 +25,9 @@ export default function Berita() {
 
         const json = await response.json();
 
-        const apiNews = json.data.map(post => ({
+        const apiNews = json.data.slice(0, 3).map(post => ({
           id: post.id,
+          slug: post.slug,
           category: post.Category?.name || 'Umum',
           title: post.title.trim(),
           excerpt: getExcerpt(post.content),
@@ -119,13 +120,6 @@ export default function Berita() {
               index={idx}
             />
           ))}
-        </div>
-
-        <div className="berita__footer">
-          <button className="berita__all-btn">
-            <span>Lihat Semua Berita</span>
-            <span className="berita__all-btn-arrow">↗</span>
-          </button>
         </div>
       </div>
     </section>

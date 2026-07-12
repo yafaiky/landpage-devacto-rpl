@@ -14,10 +14,15 @@ const BeritaCard = memo(({ item, index }) => {
                 </div>
                 <h3 className="berita__card-title">{item.title}</h3>
                 <p className="berita__card-excerpt">{item.excerpt}</p>
-                <button className="berita__card-btn">
+                <a
+                    href={`https://xxx.c8nayrntn2.qzz.io/blog/posts/${item.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="berita__card-btn"
+                >
                     <span>Baca Selengkapnya</span>
                     <span className="berita__card-btn-arrow">→</span>
-                </button>
+                </a>
             </div>
         </article>
     );

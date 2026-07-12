@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { linksData } from '../data/content.js';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -92,11 +93,7 @@ export default function Tautan() {
                 <span className="tautan__card-category">{link.category}</span>
                 {link.external && (
                   <span className="tautan__card-external">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                      <polyline points="15 3 21 3 21 9" />
-                      <line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
+                    <FaExternalLinkAlt />
                   </span>
                 )}
               </div>
